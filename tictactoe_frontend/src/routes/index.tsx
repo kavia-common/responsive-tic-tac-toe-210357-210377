@@ -398,9 +398,21 @@ export default component$(() => {
               transition: "transform 120ms ease, box-shadow 150ms ease",
               boxShadow: "0 2px 8px rgba(0,0,0,0.06)",
             }}
-            onMouseDown$={$(() => {
-              // small press effect
-              // (purely visual)
+            onMouseDown$={$((e) => {
+              const t = e.currentTarget as HTMLElement | null;
+              if (t) t.classList.add("is-pressed");
+            })}
+            onMouseUp$={$((e) => {
+              const t = e.currentTarget as HTMLElement | null;
+              if (t) t.classList.remove("is-pressed");
+            })}
+            onMouseLeave$={$((e) => {
+              const t = e.currentTarget as HTMLElement | null;
+              if (t) t.classList.remove("is-pressed");
+            })}
+            onBlur$={$((e) => {
+              const t = e.currentTarget as HTMLElement | null;
+              if (t) t.classList.remove("is-pressed");
             })}
             onKeyDown$={$((e) => {
               if (e.key === "Enter" || e.key === " ") resetGame();
@@ -446,7 +458,7 @@ export default component$(() => {
                 aria-label={label}
                 data-cell-index={idx}
                 disabled={disabled}
-                class="cell ttt-cell"
+                class={`cell ttt-cell${disabled ? " is-disabled" : ""}`}
                 onClick$={() => handleCellClick(idx)}
                 style={{
                   aspectRatio: "1 / 1",
@@ -462,17 +474,33 @@ export default component$(() => {
                     "transform 120ms ease, box-shadow 150ms ease, background 150ms ease",
                 }}
                 onMouseDown$={$((e) => {
-                  // minor press animation
-                  const t = e.currentTarget as HTMLButtonElement;
-                  t.style.transform = "translateY(1px) scale(0.995)";
+                  // Apply press visual via class toggle; guard against null and non-element targets.
+                  const t = e.currentTarget as HTMLElement | null;
+                  if (t && !t.classList.contains("is-disabled")) {
+                    t.classList.add("is-pressed");
+                  }
                 })}
                 onMouseUp$={$((e) => {
-                  const t = e.currentTarget as HTMLButtonElement;
-                  t.style.transform = "";
+                  const t = e.currentTarget as HTMLElement | null;
+                  if (t) t.classList.remove("is-pressed");
+                })}
+                onMouseLeave$={$((e) => {
+                  const t = e.currentTarget as HTMLElement | null;
+                  if (t) t.classList.remove("is-pressed");
                 })}
                 onBlur$={$((e) => {
-                  const t = e.currentTarget as HTMLButtonElement;
-                  t.style.transform = "";
+                  const t = e.currentTarget as HTMLElement | null;
+                  if (t) t.classList.remove("is-pressed");
+                })}
+                onTouchStart$={$((e) => {
+                  const t = e.currentTarget as HTMLElement | null;
+                  if (t && !t.classList.contains("is-disabled")) {
+                    t.classList.add("is-pressed");
+                  }
+                })}
+                onTouchEnd$={$((e) => {
+                  const t = e.currentTarget as HTMLElement | null;
+                  if (t) t.classList.remove("is-pressed");
                 })}
               >
                 <span
