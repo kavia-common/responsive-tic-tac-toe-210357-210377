@@ -83,3 +83,20 @@ button:focus-visible {
     animation: none !important;
   }
 }
+
+/* Tic-Tac-Toe cell icon helpers */
+.ttt-cell {
+  /* prevent font ascender/descender clipping visual misalignment */
+  line-height: 1;
+}
+.ttt-cell-icon {
+  /* Safe defaults, overridden inline with clamp for responsiveness */
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  text-align: center;
+  /* Better rendering of unicode glyphs where supported */
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}

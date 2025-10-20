@@ -422,10 +422,23 @@ export default component$(() => {
           }}
         >
           {board.value.map((cell, idx) => {
+            // Build accessible label showing chess piece names for screen readers
             const label = cell
-              ? `Cell ${idx + 1}, ${cell}`
+              ? `Cell ${idx + 1}, ${cell === "X" ? "X - Knight" : "O - Queen"}`
               : `Cell ${idx + 1}, empty`;
             const disabled = !!cell || !!winner.value || isDraw.value;
+
+            // Determine icon and color
+            const icon =
+              cell === "X" ? "♞" : cell === "O" ? "♛" : "";
+            // Theme color mapping: X/Knight -> primary, O/Queen -> secondary (as requested)
+            const iconColor =
+              cell === "X"
+                ? "var(--primary)"
+                : cell === "O"
+                  ? "var(--secondary)"
+                  : "var(--text-muted)";
+
             return (
               <button
                 key={idx}
@@ -433,7 +446,7 @@ export default component$(() => {
                 aria-label={label}
                 data-cell-index={idx}
                 disabled={disabled}
-                class="cell"
+                class="cell ttt-cell"
                 onClick$={() => handleCellClick(idx)}
                 style={{
                   aspectRatio: "1 / 1",
@@ -443,13 +456,6 @@ export default component$(() => {
                   background: "var(--surface)",
                   display: "grid",
                   placeItems: "center",
-                  fontWeight: 800,
-                  fontSize: "2rem",
-                  letterSpacing: "0.02em",
-                  color:
-                    cell === "X"
-                      ? "var(--primary)"
-                      : (cell === "O" ? "var(--error)" : "var(--text)"),
                   cursor: disabled ? "not-allowed" : "pointer",
                   boxShadow: "0 4px 14px rgba(0,0,0,0.06)",
                   transition:
@@ -469,7 +475,26 @@ export default component$(() => {
                   t.style.transform = "";
                 })}
               >
-                {cell || ""}
+                <span
+                  aria-hidden="true"
+                  class="ttt-cell-icon"
+                  style={{
+                    // Responsive sizing with clamp to fit various viewports
+                    fontSize: "clamp(1.75rem, 6vw, 3rem)",
+                    lineHeight: 1,
+                    color: iconColor,
+                    display: "inline-flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    fontWeight: 700,
+                    // Ensure the glyph stays visually balanced and centered
+                    transform: "translateY(2%)",
+                    fontFamily:
+                      "ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Noto Sans, Arial, 'Apple Color Emoji','Segoe UI Emoji','Segoe UI Symbol'",
+                  }}
+                >
+                  {icon}
+                </span>
               </button>
             );
           })}
