@@ -1,15 +1,33 @@
 /**
  * WHAT IS THIS FILE?
  *
- * Globally applied styles for the ultralight Qwik template.
- * Uses a minimalistic light theme with specified color scheme.
+ * Global styles and theme tokens for the Qwik Tic-Tac-Toe app.
+ * Theme: Ocean Professional
+ * - primary #2563EB
+ * - secondary/success #F59E0B
+ * - error #EF4444
+ * - background #f9fafb
+ * - surface #ffffff
+ * - text #111827
  */
 
 :root {
-  --primary-color: #000000;
-  --secondary-color: #333333;
-  --accent-color: #0078d4;
-  --background-color: #ffffff;
+  /* Theme tokens */
+  --primary: #2563eb;
+  --secondary: #f59e0b;
+  --success: #10b981; /* keep success green; secondary used as accent as requested */
+  --error: #ef4444;
+
+  --background: #f9fafb;
+  --surface: #ffffff;
+  --surface-2: #fcfcfd;
+  --border: rgba(17, 24, 39, 0.08);
+  --text: #111827;
+  --text-muted: #6b7280;
+
+  /* Gradients and shadows */
+  --grad-soft: linear-gradient(135deg, rgba(37,99,235,0.06), rgba(249,250,251,1));
+  --shadow-soft: 0 10px 25px rgba(0,0,0,0.08);
 }
 
 html {
@@ -26,16 +44,42 @@ html {
     Arial,
     "Noto Sans",
     sans-serif;
+  color-scheme: light;
 }
 
 body {
   margin: 0;
   padding: 0;
-  background-color: var(--background-color);
-  color: var(--primary-color);
+  background-color: var(--background);
+  color: var(--text);
   line-height: inherit;
+  min-height: 100vh;
 }
 
 * {
   box-sizing: border-box;
+}
+
+/* Buttons and focus states */
+button {
+  outline: none;
+}
+button:focus-visible {
+  outline: 2px solid var(--primary);
+  outline-offset: 2px;
+}
+
+/* Utility classes optionally used by components */
+.text-primary { color: var(--primary); }
+.text-error { color: var(--error); }
+.text-secondary { color: var(--secondary); }
+.bg-surface { background: var(--surface); }
+.border-soft { border: 1px solid var(--border); }
+
+/* Optional reduced motion handling */
+@media (prefers-reduced-motion: reduce) {
+  * {
+    transition: none !important;
+    animation: none !important;
+  }
 }

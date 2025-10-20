@@ -53,7 +53,7 @@ export default defineConfig(({ command, mode }): UserConfig => {
       },
       port: 3000,
       host: '0.0.0.0',
-      allowedHosts: ['.kavia.ai'],
+      // Note: allowedHosts is not a valid Vite ServerOptions prop; removed to satisfy TS types
     },
     preview: {
       headers: {
